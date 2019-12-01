@@ -3,7 +3,7 @@ all: test hello
 
 .PHONY: test
 test::
-	go test
+	go test --cover
 
 hello:
 	go build -o hello
