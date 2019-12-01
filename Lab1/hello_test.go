@@ -7,28 +7,33 @@ import (
 	"testing"
 )
 
-func Test_main(t *testing.T) {
+func setupRedirection(t *testing.T) (stdoutChannel chan string, tearDown func(t *testing.T)) {
 	r, w, err := os.Pipe()
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	originalStdout := os.Stdout
-	defer func() { os.Stdout = originalStdout }()
 
 	os.Stdout = w
 
-	outC := make(chan string)
+	stdoutChannel = make(chan string)
 	go func() {
 		var buf bytes.Buffer
 		_, _ = io.Copy(&buf, r)
-		outC <- buf.String()
+		stdoutChannel <- buf.String()
 		_ = r.Close()
 	}()
+	tearDown = func(t *testing.T) { os.Stdout = originalStdout }
+	return
+}
 
+func Test_main(t *testing.T) {
+	stdoutChannel, tearDown := setupRedirection(t)
+	defer tearDown(t)
 	main()
-	_ = w.Close()
+	_ = os.Stdout.Close()
 
-	if expected, actual := "Hello, world!\n", <-outC; expected != actual {
+	if expected, actual := "Hello, world!\n", <-stdoutChannel; expected != actual {
 		t.Errorf("Expected and actual differ:\n<%v>\n<%v>\n", expected, actual)
 	}
 }
