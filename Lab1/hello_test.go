@@ -7,28 +7,28 @@ import (
 	"testing"
 )
 
-func setupRedirection(t *testing.T) (stdoutChannel chan string, tearDown func(t *testing.T)) {
+func setupRedirection(t *testing.T, fileToRedirect **os.File) (redirectedChannel chan string, tearDown func(t *testing.T)) {
 	r, w, err := os.Pipe()
 	if err != nil {
 		t.Fatal(err)
 	}
-	originalStdout := os.Stdout
+	originalStdout := *fileToRedirect
 
-	os.Stdout = w
+	*fileToRedirect = w
 
-	stdoutChannel = make(chan string)
+	redirectedChannel = make(chan string)
 	go func() {
 		var buf bytes.Buffer
 		_, _ = io.Copy(&buf, r)
-		stdoutChannel <- buf.String()
+		redirectedChannel <- buf.String()
 		_ = r.Close()
 	}()
-	tearDown = func(t *testing.T) { os.Stdout = originalStdout }
+	tearDown = func(t *testing.T) { *fileToRedirect = originalStdout }
 	return
 }
 
 func Test_main(t *testing.T) {
-	stdoutChannel, tearDown := setupRedirection(t)
+	stdoutChannel, tearDown := setupRedirection(t, &os.Stdout)
 	defer tearDown(t)
 	main()
 	_ = os.Stdout.Close()
