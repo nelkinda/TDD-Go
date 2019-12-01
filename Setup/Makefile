@@ -6,7 +6,7 @@ build:
 .PHONY: run
 run:
 	#docker run --name docker-go -d docker-go
-	docker run --name docker-go -d --mount type=bind,source="$(CURDIR)",target=/app docker-go
+	docker run --name docker-go -d --mount type=bind,source="$(CURDIR)"/../,target=/app docker-go
 
 .PHONY: login
 login:
