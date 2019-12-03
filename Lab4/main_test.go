@@ -16,7 +16,7 @@ var a App
 
 func TestMain(m *testing.M) {
 	a = App{}
-	a.Initialize("root", "Ruy2%Fqc#28", "rest_api_example")
+	a.Initialize("docker", "docker", "rest_api_example")
 	ensureTableExists()
 	code := m.Run()
 	clearTable()

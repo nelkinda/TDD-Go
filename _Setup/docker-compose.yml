@@ -10,7 +10,7 @@ services:
       MYSQL_PASSWORD: docker
     container_name: docker-mysql
     ports:
-    - "13306:3306"
+    - "3306:3306"
     tty: true
 
   app:
