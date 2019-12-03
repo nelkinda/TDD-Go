@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  db:
+    build:
+      context: ./MySQL
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+    container_name: docker-mysql
+    ports:
+    - "13306:3306"
+    tty: true
+
+  app:
+    build:
+      context: .
+    volumes:
+      - type: bind
+        source: /home/siddhesh.nikude/grab-tdd-go/TDD-Go
+        target: /app
+    container_name: docker-go
+    ports:
+    - 8080:8080
+    tty: true
+    depends_on:
+      - db
