@@ -15,11 +15,11 @@ type App struct {
 
 func (a *App) Initialize(user, password, dbname string) {
 	//connectionString := fmt.Sprintf("%s:%s@/%s", user, password, dbname)
-	//connectionString := fmt.Sprintf("%s:%s@:%d/%s", user, password, 3306, dbname)
-	connectionString := fmt.Sprintf("%s:%s@tcp(localhost:3306)/%s", user, password, dbname)
 	var err error
-	a.DB, err = sql.Open("mysql", connectionString)
+	a.DB, err = sql.Open("mysql", "docker:docker@tcp(db:3306)/rest_api_example")
+	//a.DB, err = sql.Open("mysql", connectionString)
 	if err != nil {
+		fmt.Errorf("Hellooooooooo")
 		log.Fatal(err)
 	}
 	a.Router = mux.NewRouter()
