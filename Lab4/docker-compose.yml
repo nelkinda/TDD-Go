@@ -1,4 +1,5 @@
-version: '3'
+version: '3.7'
+
 services:
   db:
     build:
@@ -15,8 +16,12 @@ services:
   app:
     build:
       context: ./Go
+#    volumes:
+#    - "./Go:/go"
     volumes:
-    - "./Go:/go"
+      - type: bind
+        source: /home/siddhesh.nikude/grab-tdd-go/TDD-Go/Lab4
+        target: /go
     container_name: golang_app
     ports:
     - "8080:8080"
