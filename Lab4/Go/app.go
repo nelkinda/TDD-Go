@@ -10,7 +10,7 @@ import (
 
 type App struct {
 	Router *mux.Router
-	DB *sql.DB
+	DB     *sql.DB
 }
 
 func (a *App) Initialize(user, password, dbname string) {
@@ -25,4 +25,4 @@ func (a *App) Initialize(user, password, dbname string) {
 	a.Router = mux.NewRouter()
 }
 
-func (a *App) Run (addr string) {}
+func (a *App) Run(addr string) {}
