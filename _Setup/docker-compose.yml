@@ -18,7 +18,7 @@ services:
       context: .
     volumes:
       - type: bind
-        source: /home/siddhesh.nikude/grab-tdd-go/TDD-Go
+        source: ${PWD}/..
         target: /app
     container_name: docker-go
     ports:
