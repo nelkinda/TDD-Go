@@ -20,7 +20,7 @@ services:
 #    - "./Go:/go"
     volumes:
       - type: bind
-        source: /home/siddhesh.nikude/grab-tdd-go/TDD-Go/Lab4
+        source: ${PWD}
         target: /go
     container_name: golang_app
     ports:
